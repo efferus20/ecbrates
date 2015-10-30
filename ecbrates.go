@@ -147,7 +147,11 @@ func New() (*Rates, error) {
 
 // Load - create a new instances of the rates and fetch a historical data from ECB
 func Load() ([]Rates, error) {
-	return fetch90days()
+	return LoadFromURL(rates90daysURL)
+}
+
+func LoadFromURL(url string) ([]Rates, error) {
+	return fetchFromURL(url)
 }
 
 // Convert a value "from" one Currency -> "to" other Currency
@@ -217,11 +221,11 @@ func (r *Rates) fetchDay() error {
 }
 
 // Fetch a lot of exchange rates
-func fetch90days() ([]Rates, error) {
+func fetchFromURL(url string) ([]Rates, error) {
 
 	var rates []Rates
 
-	response, err := http.Get(rates90daysURL)
+	response, err := http.Get(url)
 	if err != nil {
 		return rates, err
 	}
